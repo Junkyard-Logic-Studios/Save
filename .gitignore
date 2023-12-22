@@ -1,0 +1,8 @@
+# ignore everything
+*
+
+# ...except for the .gitignore file
+!.gitignore
+
+# ...or any database file starting with 'git_'
+!git_*.db
