@@ -1,8 +1,14 @@
 # ignore everything
 *
 
-# ...except for the .gitignore file
+# ...except for the .gitignore file,
 !.gitignore
 
-# ...or any database file starting with 'git_'
+# ...any creative database file starting with 'git_',
 !git_*.db
+
+# ...any survival database file starting with 'git_',
+!Survival/git_*.db
+
+# ...or any custom game mode database file starting with 'git_'
+!Custom/git_*.db
