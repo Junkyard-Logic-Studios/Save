@@ -1,8 +1,26 @@
-# ignore everything
+# ignore all files in the base folder
 *
 
 # ...except for the .gitignore file
 !.gitignore
 
-# ...or any database file starting with 'git_'
+# ...or any creative database file starting with 'git_'
 !git_*.db
+
+
+
+# ignore all files in the survival folder
+!Survival/
+Survival/*
+
+# ...except for any survival database file starting with 'git_'
+!Survival/git_*.db
+
+
+
+# ignore all files in the custom game mode folder
+!Custom/
+Custom/*
+
+# ...except for any custom game mode file starting with 'git_'
+!Custom/git_*.db
