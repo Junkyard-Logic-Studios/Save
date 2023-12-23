@@ -9,6 +9,7 @@ from datetime import datetime
 def gitPull():
     system("git pull origin main")
 
+
 def gitPush(name):
     name = basename(name.replace("\\","/")).replace(".db","")
     system("git add .")
@@ -51,36 +52,39 @@ class TrackedFile:
         self.modDate = currentModDate
 
 
-# find files to track
-saveFolderPath = "."
 
-filePaths = [f for f in listdir(saveFolderPath) 
-                if isfile(join(saveFolderPath, f))]
+def main():
+    # pull latest state
+    gitPull()
 
-for f in listdir(saveFolderPath):
-    subFolder = join(saveFolderPath, f)
-    if isdir(subFolder):
-        filePaths += [join(subFolder, g) for g in listdir(subFolder)
-                        if isfile(join(subFolder, g))]
+    # find files to track
+    filePaths = [f for f in listdir() if isfile(f)]
 
-trackedFiles = [TrackedFile(f) for f in filePaths
-                if f.find("git_") != -1 and f.find(".db") != -1]
+    for f in listdir():
+        if isdir(f):
+            filePaths += [join(f, g) for g in listdir(f) if isfile(join(f, g))]
 
-print("worlds found:")
-for f in trackedFiles:
-    print(f.path)
-print()
+    trackedFiles = [TrackedFile(f) for f in filePaths
+                    if f.find("git_") != -1 and f.find(".db") != -1]
+
+    print("worlds found:")
+    for f in trackedFiles:
+        print(f.path)
+    print()
+
+    # launch Scrap Mechanic
+    system("steam steam://rungameid/387990")
+
+    # observation loop
+    while True:
+        if activeWorld == 0:
+            for f in trackedFiles:
+                f.update()
+        else:
+            activeWorld.checkClosed()
+        time.sleep(2.0)
 
 
-# launch Scrap Mechanic
-system("steam steam://rungameid/387990")
 
-
-# observation loop
-while True:
-    if activeWorld == 0:
-        for f in trackedFiles:
-            f.update()
-    else:
-        activeWorld.checkClosed()
-    time.sleep(2.0)
+if __name__ == "__main__":
+    main()
