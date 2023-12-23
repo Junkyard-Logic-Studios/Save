@@ -1,8 +1,11 @@
 # ignore all files in the base folder
 *
 
-# ...except for the .gitignore file
+# ...except for the .gitignore file,
 !.gitignore
+
+# ...the python observer script,
+!observer.py
 
 # ...or any creative database file starting with 'git_'
 !git_*.db
