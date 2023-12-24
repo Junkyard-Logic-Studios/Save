@@ -45,7 +45,7 @@ class TrackedFile:
             print("world opened: " + self.path + " at " 
                 + datetime.utcfromtimestamp(currentModDate)
                 .strftime("%d/%m/%Y, %H:%M:%S"))
-            time.sleep(10)      # cover inconsistent db access upon loading
+            time.sleep(15)      # cover inconsistent db access upon loading
         self.modDate = currentModDate
 
     # observe if the world was closed
@@ -61,29 +61,31 @@ class TrackedFile:
         self.modDate = currentModDate
 
 
+def isDbFile(f):
+    return isfile(f) and f.find("git_") != -1 and  f.find(".db") != -1
+
+
 def findTrackableFiles():
-    filePaths = [f for f in listdir() if isfile(f)]
-    for f in listdir():
-        if isdir(f):
-            filePaths += [join(f, g) for g in listdir(f) if isfile(join(f, g))]
-    trackedFiles = [TrackedFile(f) for f in filePaths
-                    if f.find("git_") != -1 and f.find(".db") != -1]
-    return set(trackedFiles)
+    files = [TrackedFile(f) for f in listdir() if isDbFile(f)]
+    for d in listdir():
+        if isdir(d):
+            files += [TrackedFile(join(d, f)) for f in listdir(d) if isDbFile(join(d,f))]
+    return set(files)
 
 
 def loop():
-    trackedFiles = set()
-
+    files = set()
     while True:
         if activeWorld == 0:
-            trackedFiles = trackedFiles.union(findTrackableFiles())
-            
-            print("worlds found:")
-            for f in trackedFiles:
-                print(f.path)
-            print()
-            
-            for f in trackedFiles:
+            currentFiles = findTrackableFiles()
+            newFiles = currentFiles - files
+            delFiles = files - currentFiles
+            for f in newFiles:
+                print("found world: " + f.path)
+            for f in delFiles:
+                print("removed world: " + f.path)
+            files = (files - delFiles) | newFiles     # ensure that elements from previous iteration are kept alive 
+            for f in files:
                 f.update()
         else:
             activeWorld.checkClosed()
@@ -91,19 +93,8 @@ def loop():
 
 
 def main():
-
     gitPull()
-
-    trackedFiles = findTrackableFiles()
-
-    print("worlds found:")
-    for f in trackedFiles:
-        print(f.path)
-    print()
-
-    # launch Scrap Mechanic
-    # system("steam steam://rungameid/387990")
-
+    system("steam steam://rungameid/387990")    # launch Scrap Mechanic
     loop()
 
 
