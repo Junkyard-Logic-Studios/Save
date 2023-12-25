@@ -1,7 +1,14 @@
 # synchronized Save directory for Scrap Mechanic
 
 This repository allows for synchronizing Scrap Mechanic worlds between friends. It is meant to provide an alternative to an always-on server hosted by one of the participants, as whoever is online may host an up-to-date state of the world. 
-The principle it runs off of is utilization of the GitHub service to store game data and then updating local game files or being updated from local game files when Scrap Mechanic is run or a world is closed. This works with SM because user data is stored by a unique identifier, not by "host" or "non-host". What we are describing in this README is effectively how to set up a combination world data synchronizer and game launcher. Important note on use is that you WILL have to close the synchronizer once you exit the Scrap Mechanic game, as the synchronizer does not close itself when the game closes.
+The principle it runs off of is utilization of the GitHub service to store game data and then updating local game files or being updated from local game files when Scrap Mechanic is run or a world is closed. This works with SM because user data is stored by a unique identifier, not by "host" or "non-host". What we are describing in this README is effectively how to set up a combination world data synchronizer and game launcher. 
+
+
+## Table of Contents
++ [Requirements](#Requirements)
++ [Setting up the repository](#Setting-up-the-repository)
++ [Adding the script to the steam library](#Adding-the-script-to-the-steam-library)
++ [How to use](#How-to-use)
 
 
 ## Requirements
@@ -34,7 +41,7 @@ You can then copy all the contents of `User_x\Save_old` into the newly created `
 As the repository is now set up, you could from now on launch your game by navigating into `User_x\Save` and calling `python observer.py`, however a more convenient option is to add the script to your steam library.
 
 
-## Adding the script to the steam library
+## Adding the script to the Steam Library
 
 In the Steam app, navigate to the Library tab. At the bottom left of the window click: `Add a Game` &rarr; `Add a Non-Steam Game...` &rarr; tick any of the boxes that it shows &rarr; `Add Selected Programs`.
 Find and right-click your newly added program on the left of the Library tab and click: `Properties...`.
@@ -59,5 +66,6 @@ If you now press the `PLAY` button on your installation in the Library you shoul
 The observer script is set up to track all worlds whose names start with "git_", meaning all your old worlds should be unaffected. The names of all trackable files currently visible to the script will be logged to the console/terminal window. A similar message will show whenever a world has been opened or closed. Shortly after closing a tracked world the script will commit and push your changes to the remote repository. The script does not close itself after you exit Scrap Mechanic, so after you exit the game you must also exit the script.
 
 A few things to keep in mind:
-- When launching a world make sure you started/restarted the script somewhat recently, so your local state is up-to-date with the remote repository
-- Two or more people playing on the same world in solo will resort in merge conflicts, therefore before launching the world yourself you should always check whether someone else is already hosting it, and if so, join them instead. If they want you to be the host, simply wait until their script says "world closed" (maximum ~1-2min after they close the world, typically less) and then relaunch the script on your end.
+- When launching a world make sure you started/restarted the script somewhat **recently**, so your local state is up-to-date with the remote repository
+- Two or more people playing on the same world in solo **will** resort in merge conflicts, therefore before launching the world yourself you should **always check** whether someone else is already hosting it, and if so, join them instead. If they want you to be the host, simply wait until their script says "world closed" (maximum ~1-2min after they close the world, typically less) and then relaunch the script on your end.
+- Once you exit the Scrap Mechanic game, you **will** have to manually close the synchronizer, as it does not close itself when the game closes.
